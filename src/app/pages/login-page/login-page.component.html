@@ -1,0 +1,34 @@
+<div class="ui middle aligned center aligned grid">
+  <div class="column">
+    <div class="ui large form">
+      <div class="ui stacked segment">
+        <form (submit)="submit()" [formGroup]="loginForm" autocomplete="off" novalidate>
+          <div class="field" [ngClass]="{'error':loginForm.controls.username.touched && loginForm.controls.username.errors?.required }">
+            <div class="ui left icon input">
+              <i class="user icon"></i>
+              <input type="text" formControlName="username" placeholder="Username">
+            </div>
+          </div>
+          <div class="field" [ngClass]="{'error':loginForm.controls.password.touched && loginForm.controls.password.errors?.required }">
+            <div class="ui left icon input">
+              <i class="lock icon"></i>
+              <input type="password" formControlName="password" placeholder="Password">
+            </div>
+          </div>
+          <button class="ui teal large submit fluid button " type="submit" [disabled]="!loginForm.valid">Submit</button>
+        </form>
+      </div>
+      <div *ngIf="loginForm.touched && !loginForm.valid" class="ui error message">
+        <ul class="list">
+            <li *ngIf="loginForm.controls.username.touched && loginForm.controls.username.errors?.required">Username is required</li>
+            <li *ngIf="loginForm.controls.password.touched && loginForm.controls.password.errors?.required">Password is required</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+<button (click)="refresh()">Refresh</button>
+
+
