@@ -1,0 +1,33 @@
+.card-body {
+  font-size: 14px;
+}
+.card-title {
+  font-size: 16px;
+  font-weight: 500;
+}
+.cell-label {
+  text-transform: lowercase;
+  font-style: italic;
+  font-size: 12px;
+  color: #aaa;
+  margin-right: 2px;
+}
+.cell-data {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-right: 10px;
+}
+.stack-trace {
+  margin-top: 15px;
+  white-space: pre;
+  text-overflow: initial;
+}
+.sublist-cell {
+  overflow: hidden;
+}
+.card {
+  background: inherit;
+  margin: 5px 0;
+  padding: 12px;
+}

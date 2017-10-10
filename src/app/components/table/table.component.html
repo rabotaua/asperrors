@@ -1,0 +1,9 @@
+<div *ngIf="data.length">
+
+  <div *ngFor="let item of data let i = index">
+    <app-error-card
+      [item]="item"
+      [data]="initData"
+      [number]="i + 1"></app-error-card>
+  </div>
+</div>
