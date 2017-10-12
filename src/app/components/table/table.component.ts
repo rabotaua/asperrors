@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core'
+import { Router } from '@angular/router'
 
 import {MainService} from '../../services/main.service'
 import _ from 'lodash'
+import {environment} from '../../../environments/environment'
 
 @Component({
   selector: 'app-table',
@@ -9,89 +11,84 @@ import _ from 'lodash'
   styleUrls: ['./table.component.css']
 })
 export class TableComponent implements OnInit {
-  public data: Array<object> = []
+
   public initData: Array<any> = []
-  public detailedList: Array<object> = []
-  constructor(private mainService: MainService) { }
+  public statsData: Array<object> = []
+  
+  
+  constructor(private mainService: MainService, private router: Router) { }
   
   ngOnInit() {
     this.mainService.loadData().subscribe(data => {
-      console.log('init', data)
+  
       this.initData = data
-      this.data = data.map(item => {
+ 
+      data = data.map(item => {
         item.message = item.exceptionMessage
-          .replace(/\d+/gi, '0').replace('\'[^\']+\'', '\'...\'')
-          .replace('\([^\)]+\)', '(...)')
-          .replace('Stored procedure .+ failed.', 'Stored procedure X failed.')
+          .replace(/\d+/gi, '0')
+          .replace(/'[^']+'/gi, '\'...\'')
+          .replace(/\([^)]+\)/gi, '\(...\)')
+          .replace(/Stored procedure .+ failed./, 'Stored procedure X failed.')
         return item
       })
-  
-      
-      const uniqueNames = this.countOccurrence(this.data)
-      this.data = this.getUniqueObject(this.data, 'message')
-        .map(item => {
-          uniqueNames.forEach(name => {
-            if (item.message === name.message) {
-              item.count = name.count
-              item.uniqueIp = name.uniqueIp
-              item.server = name.server
-              item.site = name.site
-            }
-          })
-          return item
-        })
-      console.log('result data', this.data)
-    })
-    
-  }
-  // todo combine methods / optimize ?
-  // todo convert to lodash ?
-  
-  countOccurrence(array) {
-    const obj = []
-    const uniqueNames = Array.from(new Set(array.map(item => item.message)))
-
-    
-    uniqueNames.forEach(name => {
-      const groupedByName = array.filter(value => value.message === name)
-      console.log('API', groupedByName)
-      obj.push({
-        message: name,
-        count: groupedByName.length,
-        uniqueIp: _.uniqBy(groupedByName, 'userHostAddress').length,
-        server: {
-          drum: Math.round(groupedByName.filter(item => item.machinename === 'DRUM').length / groupedByName.length * 100),
-          srv12: Math.round(groupedByName.filter(item => item.machinename === 'SRV12').length / groupedByName.length * 100),
-          srv17: Math.round(groupedByName.filter(item => item.machinename === 'SRV17').length / groupedByName.length * 100)
-        },
-        site: {
-          main: Math.round(groupedByName.filter(item => item.requestUrl.indexOf('/rabota.ua') > 0).length / groupedByName.length * 100),
-          mobile: Math.round(groupedByName.filter(item => item.requestUrl.indexOf('/m.rabota.ua') > 0).length / groupedByName.length * 100),
-          api: Math.round(groupedByName.filter(item => item.requestUrl.indexOf('/api.rabota.ua') > 0).length / groupedByName.length * 100),
-          others: Math.round(groupedByName.filter(item => {
-            return !(
-              item.requestUrl.indexOf('/rabota.ua') > 0 ||
-              item.requestUrl.indexOf('/m.rabota.ua') > 0 ||
-              item.requestUrl.indexOf('/api.rabota.ua') > 0
-            )
-          }).length / groupedByName.length * 100)
-        }
-      })
-    })
-    return obj
-  }
-  
-  getUniqueObject(array, field) {
-    const unique = {}
-    const obj = array.filter((entry) => {
-      if (unique[entry[field]]) {
-        return false
+      this.statsData = _
+        .uniqBy(data, 'message')
+        .map(statsItem => this.getStatsByMessage(data, statsItem.message))
+        .sort( (a, b) => b.countTotal - a.countTotal)
+    }, error => {
+      if (error.status === 401) {
+        localStorage.removeItem('token')
+        return this.router.navigateByUrl('/login')
       }
-      unique[entry[field]] = true
-      return true
+        console.log('ERR', error)
     })
-    return obj
   }
   
- 
+  getStatsByMessage(data, message) {
+    const groupedByMessage = data.filter(value => value.message === message)
+    return {
+      message: message,
+      countTotal: groupedByMessage.length,
+      countUnique: _.uniqBy(groupedByMessage, 'userHostAddress').length,
+      level: groupedByMessage[0].level,
+      server: {
+        drum: this.getPercentage(groupedByMessage, item => item.machinename === 'DRUM'),
+        srv12: this.getPercentage(groupedByMessage, item => item.machinename === 'SRV12'),
+        srv17: this.getPercentage(groupedByMessage, item => item.machinename === 'SRV17')
+      },
+      site: {
+        main: this.getPercentage(groupedByMessage, item => item.requestUrl.indexOf('/rabota.ua') > 0),
+        mobile: this.getPercentage(groupedByMessage, item => item.requestUrl.indexOf('/m.rabota.ua') > 0),
+        api: this.getPercentage(groupedByMessage, item => item.requestUrl.indexOf('/api.rabota.ua') > 0),
+        others: this.getPercentage(groupedByMessage, item => {
+          return !['/rabota.ua', '/m.rabota.ua', '/api.rabota.ua'].some(mask => item.requestUrl.includes(mask))
+        })
+        
+      }
+    }
+  }
+  
+  getPercentage(array: Array<any>, callback) {
+    return Math.round(
+      array.filter(callback).length / array.length * 100
+    )
+  }
+  
+  
+  // alt variants to calculate percentage
+  getServerPercentage(array: Array<any>, mask: string) {
+    return Math.round(
+      array.filter(item => item.machinename === mask).length / array.length * 100
+    )
+  }
+  
+  getSitePercentage(array, mask) {
+   
+    return Math.round(array.filter(item => {
+      const res =  mask.some(val => item.requestUrl.includes(val))
+      return mask.length > 1 ? !res : res
+      }).length / array.length * 100
+    )
+  }
+
 }

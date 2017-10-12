@@ -1,1 +1,29 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
+}
+.flex-center {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.lightgrey {
+  color: #b3b8b8;
+  font-style: italic;
+}
+
+.highlight {
+  color: #333333;
+  font-weight: 600;
+  font-family: monospace;
+}
+
+.hide {
+  color: red;
+  display: none;
+}

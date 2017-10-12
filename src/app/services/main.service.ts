@@ -12,7 +12,13 @@ export class MainService {
   public token = localStorage.getItem(environment.token)
 
 
-  constructor(private api: ApiService, private router: Router) { }
+  constructor(private api: ApiService, private router: Router) {
+    if (this.token) {
+    
+    } else {
+      router.navigateByUrl('/login')
+    }
+  }
 
 
   login (username: string, password: string) {

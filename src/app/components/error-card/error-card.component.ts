@@ -6,28 +6,56 @@ import {Component, Input, OnInit} from '@angular/core'
   styleUrls: ['./error-card.component.scss']
 })
 export class ErrorCardComponent implements OnInit {
-  @Input() item: any
-  @Input() data: Array<any>
+  @Input() error
   @Input() number: number
-  public detailedList: Array<any> = []
+  public stackTrace: string
   public isCollapsed = true
-  constructor() { }
-
-  ngOnInit() {
+  public hiddenAmount = 0
   
+  
+  
+  constructor() { }
+  ngOnInit() {
   }
-  viewList(message: string) {
-    this.detailedList = this.data.filter(item => item.message === message)
+  
+  
+  expandStackTrace() {
     this.isCollapsed = !this.isCollapsed
-    // console.log('card error', this.error)
+    
+    // todo array of objects?
+    // todo optimize
+    
+    let flag = !this.error.stackTrace.includes(':line ')
+    this.stackTrace = this.error.stackTrace
+      .split('\n')
+      .map(line => {
+        let cls = 'normal'
+        if (line.indexOf(' at System.') !== -1) {
+          if (flag) {
+            cls = 'lightgrey'
+          } else {
+            cls = 'hide'
+            this.hiddenAmount++
+          }
+        } else if (line.indexOf(':line ') !== -1) {
+          cls = 'highlight'
+          flag = true
+        }
+        if (line.match(/\S/g)) {
+          return `<span class="${cls}">${line.replace(/\ +(at )/, 'at ')}</span>`
+        }
+      })
+      .join('')
+    
+    // if ()
+    
+    console.log(!!this.stackTrace)
   }
-  // getSiteSource(error) {
-  //   if (error.requestUrl.indexOf('/rabota.ua') > 0) {
-  //     return 'rabota.ua'
-  //   } else if (error.requestUrl.indexOf('/m.rabota.ua') > 0) {
-  //     return 'm.rabota.ua'
-  //   } else if (error.requestUrl.indexOf('/api.rabota.ua') > 0) {
-  //     return 'api.rabota.ua'
-  //   } else {return ''}
-  // }
+  
+  getDate(date) {
+    return new Date(date).toLocaleTimeString()
+  }
+  getSiteUrl(url) {
+    return url.match(/https?:\/\/([^\/]+)/)[0]
+  }
 }

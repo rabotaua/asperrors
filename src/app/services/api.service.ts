@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import {Headers, Http, RequestOptions, URLSearchParams} from '@angular/http'
+import {Headers, Http, RequestOptions, URLSearchParams, Response} from '@angular/http'
 import {Router} from '@angular/router'
 import 'rxjs/add/operator/map'
 
@@ -33,19 +33,18 @@ export class ApiService {
     return new RequestOptions({headers, params})
   }
 
-  private responseHandler(response) { // todo: fix response type
+  private responseHandler(response: Response) {
     if (response.status === 401) {
       localStorage.removeItem(environment.token)
       return this.router.navigateByUrl('/login')
     }
-
     return response.json()
   }
 
   login(username: string, password: string) {
     return this.http
       .post(this.url('/token'), {username, password}, this.options())
-      .map(response => this.responseHandler(response))
+      .map(this.responseHandler)
   }
   // Todo: use the bitch / cases are events, timeout ..?
   refreshToken() {
@@ -62,7 +61,8 @@ export class ApiService {
   getBigQuery() {
     return this.http
       .post(this.queryApi, this.queryPayload, this.options(true))
-      .map(response => this.responseHandler(response))
+      .map(this.responseHandler)
+      
   }
 
 

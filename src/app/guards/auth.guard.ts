@@ -6,7 +6,6 @@ import {environment} from '../../environments/environment'
 export class AuthGuard implements CanActivate {
   constructor() {
   }
-
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     return !!localStorage.getItem(environment.token)
   }

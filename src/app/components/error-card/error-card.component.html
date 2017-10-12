@@ -1,78 +1,40 @@
-<div *ngIf="item">
+<div class="error-card {{error.level.toLowerCase()}}">
+  <!--<span>{{number+1}}</span>-->
+  <div class="error-card-title">
+    <button
+      type="button"
+      class="btn btn-link button-label"
+      (click)="expandStackTrace()"
+      [attr.aria-expanded]="!isCollapsed"
+      aria-controls='stackTrace'>
 
-  <div class="card">
-    <div class="row">
-        <div class="col-md-9 card-message">{{number}}. {{item.message}}</div>
-        <div class="col-md-1 ml-auto">
-          <span class="cell-label">total</span>
-          <span class="cell-data">{{item.count || 0}}</span>
-        </div>
-        <div class="col-md-2">
-          <span class="cell-label">unique</span>
-          <span class="cell-data">{{item.uniqueIp || 0}}</span>
-        </div>
-    </div>
-    <div class="row">
-
-      <div class="col-md-5 ">
-
-        <div class="error-card-stats">
-          <span class="stats-title">Servers, % </span>
-          <div>
-            <span class="cell-label">drum</span>
-            <span class="cell-data">{{item.server.drum || 0}}</span>
-          </div>
-          <div>
-            <span class="cell-label">srv12</span>
-            <span class="cell-data">{{item.server.srv12 || 0}}</span>
-          </div>
-          <div>
-            <span class="cell-label">srv17</span>
-            <span class="cell-data">{{item.server.srv17 || 0}}</span>
-          </div>
-        </div>
-      </div>
-      <!--******-->
-      <div class="col-md-5">
-
-          <div class="error-card-stats">
-            <span class="stats-title">Sites, %</span>
-            <div>
-              <span class="cell-label">main</span>
-              <span class="cell-data">{{item.site.main || 0}}</span>
-            </div>
-            <div>
-              <span class="cell-label">mobile</span>
-              <span class="cell-data">{{item.site.mobile || 0}}</span>
-            </div>
-            <div>
-              <span class="cell-label">api</span>
-              <span class="cell-data">{{item.site.api || 0}}</span>
-            </div>
-            <div>
-              <span class="cell-label">others</span>
-              <span class="cell-data">{{item.site.others || 0}}</span>
-            </div>
-          </div>
-        </div>
-
-
-      <div class="col-md-2">
-        <button
-          class="btn btn-outline-primary"
-          type="button"
-          (click)="viewList(item.message)"
-          [attr.aria-expanded]="!isCollapsed"
-          aria-controls='sublist'>
-            {{isCollapsed ? 'View list' : 'Hide list'}}
-        </button>
-      </div>
+      {{error.exceptionMessage || 'none'}}
+    </button>
+    <div>
+      <span class="cell-data">{{getDate(error.timestamp)}}</span>
+      <span class="cell-data">{{error.machinename || 'none'}}</span>
     </div>
   </div>
 
-  <div id="sublist" [ngbCollapse]="isCollapsed">
-    <div *ngFor="let error of detailedList; let i = index" class="error-list">
-      <app-error-bundle-list [error]="error" [number]="i" ></app-error-bundle-list>
+  <div class="flex-center">
+    <span class="error-card-type">{{error.exceptionType}}</span>
+    <span class="cell-data">{{error.userHostAddress || 'none'}}</span>
+  </div>
+
+  <div class="flex-center">
+    <a class="error-card-link" href="{{getSiteUrl(error.requestUrl) + error.requestPath}}" target="_blank">
+      {{getSiteUrl(error.requestUrl) + error.requestPath}}
+    </a>
+    <span class="cell-data">{{error.user || 'none'}}</span>
+  </div>
+
+  <div id="stackTrace" [ngbCollapse]="isCollapsed">
+    <span *ngIf="hiddenAmount > 0" class="stack-trace__info" >
+      {{hiddenAmount}} items were hidden
+    </span>
+    <div *ngIf="stackTrace" class="stack-trace__content" [innerHTML]="stackTrace"></div>
+    <div *ngIf="!stackTrace" class="stack-trace__info">
+      Stack Trace is empty
     </div>
   </div>
 </div>

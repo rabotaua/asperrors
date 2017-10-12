@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ErrorBundleListComponent } from './error-bundle-list.component';
+import { ErrorCardComponent } from './error-bundle.component';
 
-describe('ErrorBundleListComponent', () => {
-  let component: ErrorBundleListComponent;
-  let fixture: ComponentFixture<ErrorBundleListComponent>;
+describe('ErrorCardComponent', () => {
+  let component: ErrorCardComponent;
+  let fixture: ComponentFixture<ErrorCardComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ErrorBundleListComponent ]
+      declarations: [ ErrorCardComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ErrorBundleListComponent);
+    fixture = TestBed.createComponent(ErrorCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

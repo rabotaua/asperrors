@@ -1,9 +1,8 @@
-<div *ngIf="data.length">
+<div *ngIf="statsData.length">
 
-  <div *ngFor="let item of data let i = index">
-    <app-error-card
+  <div *ngFor="let item of statsData" class="table-wrapper">
+    <app-error-bundle
       [item]="item"
-      [data]="initData"
-      [number]="i + 1"></app-error-card>
+      [data]="initData"></app-error-bundle>
   </div>
 </div>

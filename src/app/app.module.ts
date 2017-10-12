@@ -20,8 +20,8 @@ import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.com
 import { TableComponent } from './components/table/table.component'
 import { NgxDatatableModule } from '@swimlane/ngx-datatable'
 import {AppMaterialModule} from './modules/material.module'
-import { ErrorCardComponent } from './components/error-card/error-card.component';
-import { ErrorBundleListComponent } from './components/error-bundle-list/error-bundle-list.component'
+import { ErrorBundleComponent } from './components/error-bundle/error-bundle.component'
+import { ErrorCardComponent } from './components/error-card/error-card.component'
 
 
 @NgModule({
@@ -31,8 +31,8 @@ import { ErrorBundleListComponent } from './components/error-bundle-list/error-b
     LoginPageComponent,
     NotFoundPageComponent,
     TableComponent,
-    ErrorCardComponent,
-    ErrorBundleListComponent
+    ErrorBundleComponent,
+    ErrorCardComponent
   ],
   imports: [
     NgxDatatableModule,

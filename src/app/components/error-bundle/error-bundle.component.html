@@ -1,0 +1,82 @@
+<div class="error-bundle"
+     (mouseenter)="showHistogram = !showHistogram"
+     (mouseleave)="showHistogram = !showHistogram"
+     [ngStyle]="{'margin-bottom.px': !isCollapsed ? -10 : 0 }">
+  <div class="bundle-message col-md-8">
+    <span title="count ({{item.countUnique || 0}})" class="count {{item.level.toLowerCase()}}">
+      {{item.countTotal || 0}}
+    </span>
+    <button
+      class="btn-link button-label"
+      (click)="viewList(item.message)"
+      [attr.aria-expanded]="!isCollapsed"
+      aria-controls='sublist'>
+        {{item.message}}
+    </button>
+  </div>
+
+  <div
+    class="error-bundle-stats col-md-2"
+    [ngStyle]="{'opacity': showHistogram || !isCollapsed ? 1 : .3}">
+
+    <div class="histogram" [ngStyle]="{'height': !isCollapsed ? 45 + 'px' : 1.5 + 'em'}">
+      <div class="first--server histogram__column" [ngStyle]="{'width': item.server.drum + 'pc'}" title="DRUM">
+        <span *ngIf="item.server.drum > 0 && !isCollapsed" class="histogram__value">
+          <span>{{item.server.drum}}</span>
+          <div class="histogram__label">{{Object.keys(item.server)[0]}}</div>
+        </span>
+      </div>
+      <div class="second--server histogram__column" [ngStyle]="{'width': item.server.srv12 + 'pc'}" title="SRV12">
+        <span *ngIf="item.server.srv12 > 0 && !isCollapsed" class="histogram__value">
+          <span>{{item.server.srv12}}</span>
+          <div class="histogram__label">{{Object.keys(item.server)[1]}}</div>
+        </span>
+      </div>
+      <div class="third--server histogram__column" [ngStyle]="{'width': item.server.srv17 + 'pc'}" title="SRV17">
+        <span *ngIf="item.server.srv17 > 0 && !isCollapsed" class="histogram__value">
+          <span>{{item.server.srv17}}</span>
+          <div class="histogram__label">{{Object.keys(item.server)[2]}}</div>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="error-bundle-stats col-md-2"
+    [ngStyle]="{'opacity': showHistogram || !isCollapsed ? 1 : .3}">
+
+    <div class="histogram" [ngStyle]="{'height': !isCollapsed ? 45 + 'px' : 1.5 + 'em'}">
+      <div class="first--site histogram__column" [ngStyle]="{'width': item.site.main + 'pc'}" title="Main">
+        <span *ngIf="item.site.main > 0 && !isCollapsed" class="histogram__value">
+          <span>{{item.site.main}}</span>
+          <div class="histogram__label">{{Object.keys(item.site)[0]}}</div>
+        </span>
+      </div>
+      <div class="second--site histogram__column" [ngStyle]="{'width': item.site.mobile + 'pc'}" title="Mobile">
+        <span *ngIf="item.site.mobile > 0 && !isCollapsed" class="histogram__value">
+          <span>{{item.site.mobile}}</span>
+          <div class="histogram__label">{{Object.keys(item.site)[1]}}</div>
+        </span>
+      </div>
+      <div class="third--site histogram__column" [ngStyle]="{'width': item.site.api + 'pc'}" title="Api">
+        <span *ngIf="item.site.api > 0 && !isCollapsed" class="histogram__value">
+          <span>{{item.site.api}}</span>
+          <div class="histogram__label">{{Object.keys(item.site)[2]}}</div>
+        </span>
+      </div>
+      <div class="fourth--site histogram__column" [ngStyle]="{'width': item.site.others + 'pc'}" title="Others">
+        <span *ngIf="item.site.others > 0 && !isCollapsed" class="histogram__value">
+          <span>{{item.site.others}}</span>
+          <div class="histogram__label">{{Object.keys(item.site)[3]}}</div>
+        </span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div id="sublist" [ngbCollapse]="isCollapsed">
+  <div *ngFor="let error of detailedList; let i = index" class="error-list">
+    <app-error-card [error]="error" [number]="i" ></app-error-card>
+  </div>
+</div>
