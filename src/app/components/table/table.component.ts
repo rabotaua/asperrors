@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core'
 import { Router } from '@angular/router'
-
-import {MainService} from '../../services/main.service'
 import _ from 'lodash'
-import {environment} from '../../../environments/environment'
+import {MainService} from '../../services/main.service'
+
 
 @Component({
   selector: 'app-table',

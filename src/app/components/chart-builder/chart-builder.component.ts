@@ -12,7 +12,7 @@ export class ChartBuilderComponent implements OnInit {
   @ViewChild(BaseChartDirective) chart: BaseChartDirective
   public lineChartData: Array<object>
   public lineChartLabels: Array<string>
-  
+  public lineChartLegend = false
   public lineChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -22,8 +22,17 @@ export class ChartBuilderComponent implements OnInit {
       display: true
     }
   }
-  public lineChartLegend = false
   public lineChartType = 'line'
+  public lineChartColors: Array<any> = [
+    {
+      backgroundColor: 'rgba(255,255,255,.2)',
+      borderColor: 'rgba(41,182,246,.8)',
+      // pointBackgroundColor: 'rgba(148,159,177,1)',
+      // pointBorderColor: '#fff',
+      // pointHoverBackgroundColor: '#fff',
+      // pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    }
+  ]
   
   constructor() { }
   

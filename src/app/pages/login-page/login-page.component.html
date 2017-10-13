@@ -1,34 +1,28 @@
-<div class="ui middle aligned center aligned grid">
-  <div class="column">
-    <div class="ui large form">
-      <div class="ui stacked segment">
-        <form (submit)="submit()" [formGroup]="loginForm" autocomplete="off" novalidate>
-          <div class="field" [ngClass]="{'error':loginForm.controls.username.touched && loginForm.controls.username.errors?.required }">
-            <div class="ui left icon input">
-              <i class="user icon"></i>
-              <input type="text" formControlName="username" placeholder="Username">
-            </div>
-          </div>
-          <div class="field" [ngClass]="{'error':loginForm.controls.password.touched && loginForm.controls.password.errors?.required }">
-            <div class="ui left icon input">
-              <i class="lock icon"></i>
-              <input type="password" formControlName="password" placeholder="Password">
-            </div>
-          </div>
-          <button class="ui teal large submit fluid button " type="submit" [disabled]="!loginForm.valid">Submit</button>
-        </form>
-      </div>
-      <div *ngIf="loginForm.touched && !loginForm.valid" class="ui error message">
-        <ul class="list">
-            <li *ngIf="loginForm.controls.username.touched && loginForm.controls.username.errors?.required">Username is required</li>
-            <li *ngIf="loginForm.controls.password.touched && loginForm.controls.password.errors?.required">Password is required</li>
-        </ul>
-      </div>
+<div class="container">
+  <div class="row justify-content-md-center form-wrapper">
+    <div class="row">
+      <h3 class="h2">ASP errors monitor</h3>
     </div>
+      <form (submit)="submit()" [formGroup]="loginForm" autocomplete="off" novalidate class="align-self-center form">
+        <div class="form-group" [ngClass]="{'error':loginForm.controls.username.touched && loginForm.controls.username.errors?.required }">
+            <label for="username">Name</label>
+            <input class="form-control" type="text" formControlName="username" placeholder="Username" id="username" required>
+        </div>
+        <div class="form-group" [ngClass]="{'error':loginForm.controls.password.touched && loginForm.controls.password.errors?.required }">
+            <label for="password">Password</label>
+            <input class="form-control"  type="password" formControlName="password" placeholder="Password" id="password">
+        </div>
+        <button class="btn btn-primary" type="submit" [disabled]="!loginForm.valid">Submit</button>
+      </form>
 
+
+
+    <!--error block-->
+    <!--<div *ngIf="loginForm.touched && !loginForm.valid" class="ui error message">-->
+      <!--<ul class="list">-->
+          <!--<li *ngIf="loginForm.controls.username.touched && loginForm.controls.username.errors?.required">Username is required</li>-->
+          <!--<li *ngIf="loginForm.controls.password.touched && loginForm.controls.password.errors?.required">Password is required</li>-->
+      <!--</ul>-->
+    <!--</div>-->
   </div>
-
 </div>
-<button (click)="refresh()">Refresh</button>
-
-

@@ -28,8 +28,5 @@ export class LoginPageComponent {
     const {username, password} = this.loginForm.value
     this.mainService.login(username, password)
   }
-  refresh() {
-    this.api.refreshToken()
-  }
 
 }

@@ -1,12 +1,31 @@
-/*.column {*/
-  /*max-width: 450px;*/
-  /*margin-top: -70px;*/
-/*}*/
-
-/*.grid {*/
-  /*height: 100vh;*/
-/*}*/
-
-/*.ui.form .error.message {*/
-  /*display: block;*/
-/*}*/
+.row {
+  flex-direction: column;
+}
+.h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.form-wrapper {
+  height: 93vh;
+}
+.btn {
+  width: 100%;
+  margin-top: 15px;
+  background: rgba(41,182,246,.9);
+  outline: none;
+  border: none;
+}
+.form {
+  width: 420px;
+  padding: 15px 20px 20px 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+label {
+  display: inline-block;
+  margin-bottom: .4rem;
+  font-size: 15px;
+  font-style: italic;
+  font-weight: 500;
+  color: #8a8a9a;
+}
