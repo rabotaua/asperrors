@@ -12,12 +12,9 @@ export class ErrorCardComponent implements OnInit {
   public isCollapsed = true
   public hiddenAmount = 0
   
-  
-  
   constructor() { }
   ngOnInit() {
   }
-  
   
   expandStackTrace() {
     this.isCollapsed = !this.isCollapsed
@@ -46,16 +43,16 @@ export class ErrorCardComponent implements OnInit {
         }
       })
       .join('')
-    
-    // if ()
-    
-    console.log(!!this.stackTrace)
+ 
   }
   
   getDate(date) {
     return new Date(date).toLocaleTimeString()
   }
+  
+  
   getSiteUrl(url) {
-    return url.match(/https?:\/\/([^\/]+)/)[0]
+    console.log()
+    return url.match(/https?:\/\/([^\/]+)/)[0].replace(':443', '')
   }
 }

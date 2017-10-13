@@ -1,5 +1,5 @@
 <div *ngIf="statsData.length">
-
+    <app-chart-builder [data]="initData"></app-chart-builder>
   <div *ngFor="let item of statsData" class="table-wrapper">
     <app-error-bundle
       [item]="item"

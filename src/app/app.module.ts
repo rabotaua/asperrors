@@ -1,10 +1,12 @@
 // libraries
 import { BrowserModule } from '@angular/platform-browser'
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
+import { BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import { NgModule } from '@angular/core'
 import { HttpModule } from '@angular/http'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
+import { NgxDatatableModule } from '@swimlane/ngx-datatable'
+import { ChartsModule } from 'ng2-charts/ng2-charts'
 
 // services
 import { ApiService } from './services/api.service'
@@ -18,10 +20,9 @@ import { DashboardPageComponent } from './pages/dashboard-page/dashboard-page.co
 import { LoginPageComponent } from './pages/login-page/login-page.component'
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component'
 import { TableComponent } from './components/table/table.component'
-import { NgxDatatableModule } from '@swimlane/ngx-datatable'
-import {AppMaterialModule} from './modules/material.module'
 import { ErrorBundleComponent } from './components/error-bundle/error-bundle.component'
 import { ErrorCardComponent } from './components/error-card/error-card.component'
+import { ChartBuilderComponent } from './components/chart-builder/chart-builder.component'
 
 
 @NgModule({
@@ -32,18 +33,19 @@ import { ErrorCardComponent } from './components/error-card/error-card.component
     NotFoundPageComponent,
     TableComponent,
     ErrorBundleComponent,
-    ErrorCardComponent
+    ErrorCardComponent,
+    ChartBuilderComponent
   ],
   imports: [
-    NgxDatatableModule,
     BrowserModule,
     BrowserAnimationsModule,
     HttpModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    AppMaterialModule,
-    NgbModule.forRoot()
+    NgxDatatableModule,
+    NgbModule.forRoot(),
+    ChartsModule
   ],
   providers: [
     ApiService,
