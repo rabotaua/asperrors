@@ -15,6 +15,7 @@ export class ErrorBundleComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.item.apiList = this.mostFrequentApis(this.item.apiList, 30, 5)
   }
   
   viewList(message: string) {
@@ -26,6 +27,18 @@ export class ErrorBundleComponent implements OnInit {
     
     this.isCollapsed = !this.isCollapsed
     this.showHistogram = !this.showHistogram
+  }
+  
+  mostFrequentApis(apiList: Array<string>, percentage: number = 0, amountToShow: number = 100) {
+    const frequency = apiList
+      .reduce(
+        (acc, api) => Object.assign(acc, {[api]: acc.hasOwnProperty(api) ? acc[api] + 1 : 1}),
+        {}
+      )
+    return Object.entries(frequency)
+      .filter(api => api[1] > percentage / 100 * this.item.countTotal)
+      .sort((a, b) =>  +b[1] - +a[1])
+      .slice(0, amountToShow)
   }
   
 }

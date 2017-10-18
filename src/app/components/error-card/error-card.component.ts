@@ -52,7 +52,6 @@ export class ErrorCardComponent implements OnInit {
   
   
   getSiteUrl(url) {
-    console.log()
     return url.match(/https?:\/\/([^\/]+)/)[0].replace(':443', '')
   }
 }

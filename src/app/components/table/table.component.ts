@@ -18,29 +18,30 @@ export class TableComponent implements OnInit {
   constructor(private mainService: MainService, private router: Router) { }
   
   ngOnInit() {
-    this.mainService.loadData().subscribe(data => {
-  
-      this.initData = data
- 
-      data = data.map(item => {
-        item.message = item.exceptionMessage
-          .replace(/\d+/gi, '0')
-          .replace(/'[^']+'/gi, '\'...\'')
-          .replace(/\([^)]+\)/gi, '\(...\)')
-          .replace(/Stored procedure .+ failed./, 'Stored procedure X failed.')
-        return item
-      })
-      this.statsData = _
-        .uniqBy(data, 'message')
-        .map(statsItem => this.getStatsByMessage(data, statsItem.message))
-        .sort( (a, b) => b.countTotal - a.countTotal)
-    }, error => {
+    this.mainService.loadData().subscribe(
+      data => {
+        this.initData = data
+        data = data.map(item => {
+          item.message = item.exceptionMessage
+            .replace(/\d+/gi, '0')
+            .replace(/'[^']+'/gi, '\'...\'')
+            .replace(/\([^)]+\)/gi, '\(...\)')
+            .replace(/Stored procedure .+ failed./, 'Stored procedure X failed.')
+          return item
+        })
+        this.statsData = _
+          .uniqBy(data, 'message')
+          .map(statsItem => this.getStatsByMessage(data, statsItem.message))
+          .sort( (a, b) => b.countTotal - a.countTotal)
+      },
+      error => {
       if (error.status === 401) {
         localStorage.removeItem('token')
         return this.router.navigateByUrl('/login')
       }
         console.log('ERR', error)
-    })
+    }
+    )
   }
   
   getStatsByMessage(data, message) {
@@ -50,6 +51,7 @@ export class TableComponent implements OnInit {
       countTotal: groupedByMessage.length,
       countUnique: _.uniqBy(groupedByMessage, 'userHostAddress').length,
       level: groupedByMessage[0].level,
+      apiList: groupedByMessage.map(item => item.userHostAddress),
       server: {
         drum: this.getPercentage(groupedByMessage, item => item.machinename === 'DRUM'),
         srv12: this.getPercentage(groupedByMessage, item => item.machinename === 'SRV12'),

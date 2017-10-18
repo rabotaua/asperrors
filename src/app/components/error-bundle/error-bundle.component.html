@@ -13,6 +13,7 @@
       aria-controls='sublist'>
         {{item.message}}
     </button>
+
   </div>
 
   <div
@@ -76,6 +77,12 @@
 </div>
 
 <div id="sublist" [ngbCollapse]="isCollapsed">
+  <div *ngIf="item.apiList.length" class="bundle-api">
+    <span class="bundle-api__label">Most frequent API's (>30%)</span>
+    <div *ngFor="let api of item.apiList">
+      <span class="bundle-api__value">{{api[0]}}</span>
+    </div>
+  </div>
   <div *ngFor="let error of detailedList; let i = index" class="error-list">
     <app-error-card [error]="error" [number]="i" ></app-error-card>
   </div>
