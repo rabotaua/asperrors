@@ -3,8 +3,8 @@ import { Router } from '@angular/router'
 import _ from 'lodash'
 import {MainService} from '../../services/main.service'
 
-
 @Component({
+  moduleId: module.id,
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css']
@@ -13,26 +13,32 @@ export class TableComponent implements OnInit {
 
   public initData: Array<any> = []
   public statsData: Array<object> = []
-  
+  public filterData: Array<object> = []
+  public currentSite = ''
   
   constructor(private mainService: MainService, private router: Router) { }
+  
+  // TODO: create service(?) etc...
   
   ngOnInit() {
     this.mainService.loadData().subscribe(
       data => {
         this.initData = data
+        this.filterData = data
         data = data.map(item => {
           item.message = item.exceptionMessage
             .replace(/\d+/gi, '0')
             .replace(/'[^']+'/gi, '\'...\'')
-            .replace(/\([^)]+\)/gi, '\(...\)')
+            .replace(/\(.*[^)]+\)/gi, '\(...\)')
             .replace(/Stored procedure .+ failed./, 'Stored procedure X failed.')
+          
+          item.siteUrl = item.requestUrl
+            .match(/https?:\/\/([^\/]+)/)[1]
+            .replace(':443', '')
+          
           return item
         })
-        this.statsData = _
-          .uniqBy(data, 'message')
-          .map(statsItem => this.getStatsByMessage(data, statsItem.message))
-          .sort( (a, b) => b.countTotal - a.countTotal)
+        this.getFilteredData(data)
       },
       error => {
       if (error.status === 401) {
@@ -42,6 +48,26 @@ export class TableComponent implements OnInit {
         console.log('ERR', error)
     }
     )
+  }
+  
+  onSiteSelect(site) {
+    this.currentSite = site
+    this.getFilteredData(this.initData)
+  }
+  
+  getFilteredData(data: Array<any>) {
+    
+    if (this.currentSite) {
+      data = data.filter(item => item.siteUrl === this.currentSite)
+      this.filterData = data.filter(item => item.siteUrl === this.currentSite)
+    } else {
+      this.filterData = this.initData
+    }
+   
+    this.statsData = _
+      .uniqBy(this.filterData, 'message')
+      .map(statsItem => this.getStatsByMessage(this.filterData, statsItem.message))
+      .sort( (a, b) => b.countTotal - a.countTotal)
   }
   
   getStatsByMessage(data, message) {

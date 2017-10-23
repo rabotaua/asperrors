@@ -1,8 +1,10 @@
 <div *ngIf="statsData.length">
-    <app-chart-builder [data]="initData"></app-chart-builder>
+  <app-site-select [data]="initData" (chosenSite)="onSiteSelect($event)"></app-site-select>
+
+  <app-chart-builder [data]="filterData"></app-chart-builder>
   <div *ngFor="let item of statsData" class="table-wrapper">
     <app-error-bundle
       [item]="item"
-      [data]="initData"></app-error-bundle>
+      [data]="filterData"></app-error-bundle>
   </div>
 </div>

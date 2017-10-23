@@ -5,7 +5,6 @@ import { NgModule } from '@angular/core'
 import { HttpModule } from '@angular/http'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
-import { NgxDatatableModule } from '@swimlane/ngx-datatable'
 import { ChartsModule } from 'ng2-charts/ng2-charts'
 
 // services
@@ -23,6 +22,7 @@ import { TableComponent } from './components/table/table.component'
 import { ErrorBundleComponent } from './components/error-bundle/error-bundle.component'
 import { ErrorCardComponent } from './components/error-card/error-card.component'
 import { ChartBuilderComponent } from './components/chart-builder/chart-builder.component'
+import { SiteSelectComponent } from './components/site-select/site-select.component'
 
 
 @NgModule({
@@ -34,7 +34,8 @@ import { ChartBuilderComponent } from './components/chart-builder/chart-builder.
     TableComponent,
     ErrorBundleComponent,
     ErrorCardComponent,
-    ChartBuilderComponent
+    ChartBuilderComponent,
+    SiteSelectComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +44,6 @@ import { ChartBuilderComponent } from './components/chart-builder/chart-builder.
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxDatatableModule,
     NgbModule.forRoot(),
     ChartsModule
   ],

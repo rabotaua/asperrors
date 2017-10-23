@@ -20,7 +20,6 @@ export class ErrorCardComponent implements OnInit {
     this.isCollapsed = !this.isCollapsed
     
     // todo array of objects?
-    // todo optimize
     
     let flag = !this.error.stackTrace.includes(':line ')
     this.stackTrace = this.error.stackTrace

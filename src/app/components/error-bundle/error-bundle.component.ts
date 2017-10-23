@@ -16,6 +16,8 @@ export class ErrorBundleComponent implements OnInit {
 
   ngOnInit() {
     this.item.apiList = this.mostFrequentApis(this.item.apiList, 30, 5)
+    
+    const sites = this.data.map(item => item)
   }
   
   viewList(message: string) {
